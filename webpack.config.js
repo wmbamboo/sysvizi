@@ -3,10 +3,21 @@
 'use strict';
 const path = require('path');
 const webpack = require('webpack');
+const yargs = require('yargs');
+
+const options = yargs
+  .alias('p', 'optimize-minimize')
+  .alias('d', 'debug')
+  .argv;
+
 const config = {
-  entry: './src/index.jsx',
+  entry: './src/sysVizi.jsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
+    filename: options.optimizeMinimize ? 'vizceral.min.js' : 'vizceral.js',
+    library: 'Vizceral',
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   module: {
     rules: [
@@ -26,6 +37,7 @@ const config = {
       { test: /\.ttf$/, use: 'file-loader' },
       { test: /\.eot$/, use: 'file-loader' },
       { test: /\.svg$/, use: 'url-loader' },
+      { test: /\.png$/, use: 'url-loader' },
       { test: /\.html$/, use: 'html-loader' },
       { test: /\.css$/, use: 'style-loader!css-loader' },
       {
